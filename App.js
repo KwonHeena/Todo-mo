@@ -150,13 +150,16 @@ const App = () => {
               ListEmptyComponent={
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
+                    paddingVertical: 20,
                   }}
                 >
-                  <Text>할일을 추가하세요!</Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                    }}
+                  >
+                    ✨ 할일을 추가해보세요 ✨
+                  </Text>
                 </View>
               }
               renderItem={({ item, index }) => (
@@ -164,6 +167,10 @@ const App = () => {
                   onLongPress={() => removeTodo(item.id)}
                   style={styles.item}
                 >
+                  <View style={styles.titleBox}>
+                    <Text style={styles.todo_index}>{index + 1}</Text>
+                    <Text style={styles.todo_title}>{item.title}</Text>
+                  </View>
                   {item.photo && (
                     <View style={styles.ImagePicker}>
                       <Image
@@ -176,13 +183,10 @@ const App = () => {
                       />
                     </View>
                   )}
-                  <View style={styles.titleBox}>
-                    <Text style={styles.todo_index}>{index + 1}</Text>
-                    <Text style={styles.todo_title}>{item.title}</Text>
-                  </View>
+
                   <View style={styles.btnBox}>
-                    <Text style={styles.delete}>X</Text>
                     <Text style={styles.date}>{item.date}</Text>
+                    <Text style={styles.delete}>X</Text>
                   </View>
                 </Pressable>
               )}
@@ -203,6 +207,7 @@ const styles = StyleSheet.create({
   },
 
   box: {
+    flex: 1,
     width: "100%",
     marginTop: 60,
     alignItems: "center",
@@ -301,29 +306,33 @@ const styles = StyleSheet.create({
 
   titleBox: {
     flex: 1,
+    width: "100%",
+    alignItems: "flex-start",
     justifyContent: "space-between",
   },
   btnBox: {
     flexWrap: "wrap",
-    alignItems: "flex-end",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     gap: 5,
   },
   addList: {
-    flexWrap: "wrap",
+    // flexWrap: "wrap",
     width: "100%",
-    height: "100%",
+    // height: "100%",
+    flex: 1,
     marginTop: 10,
   },
 
   item: {
-    flexWrap: "wrap",
     width: "100%",
     backgroundColor: "#FFFFFF",
     borderRadius: 18,
     paddingVertical: 18,
     paddingHorizontal: 15,
     marginBottom: 16,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -363,6 +372,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: "hidden",
     backgroundColor: "#FFF0F7",
+    marginTop: 15,
+    marginBottom: 15,
   },
 });
 
