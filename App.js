@@ -112,7 +112,7 @@ const App = () => {
           {/* 사진 추가 버튼 */}
           <View style={styles.photo_wrap}>
             <Pressable style={styles.photo} onPress={getPhoto}>
-              <Text>Add Photo</Text>
+              <Text>사진 찍 ~~~ 기</Text>
             </Pressable>
             <Pressable style={styles.photo} onPress={getGallery}>
               <Text>Gallery</Text>
