@@ -13,6 +13,9 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage"; //저장소 사용 선언
+
+const STORAGE_KEY = "MY_LIST_V1"; //스토리지 키 지정
 
 const App = () => {
   const [text, setText] = useState("");
@@ -22,6 +25,43 @@ const App = () => {
   const [photo, setPhoto] = useState(null); // 사진 uri
   const animation = useRef(new Animated.Value(0)).current; // 텍스트 애니메이션 추가
   const emoji = useRef(new Animated.Value(0)).current; // 이모지 애니메이션 추가
+
+  // 투두 스토리지에 로드
+  useEffect(() => {
+    loadTodos();
+  }, []);
+
+  const loadTodos = async () => {
+    try {
+      const data = await AsyncStorage.getItem(STORAGE_KEY);
+      if (data) {
+        const parsed = JSON.parse(data);
+
+        const withAnim = parsed.map((t) => ({
+          ...t,
+          anima: new Animated.Value(1),
+        }));
+
+        setTodos(withAnim);
+      }
+    } catch (e) {
+      console.log("로드 오류:", e);
+    }
+  };
+
+  // 투두 스토리지에 저장
+  useEffect(() => {
+    saveTodos();
+  }, [todos]);
+
+  const saveTodos = async () => {
+    try {
+      const withoutAnim = todos.map(({ anima, ...rest }) => rest);
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(withoutAnim));
+    } catch (e) {
+      console.log("저장 오류:", e);
+    }
+  };
 
   const formatDate = (d) => {
     const y = d.getFullYear();
@@ -140,7 +180,7 @@ const App = () => {
       prev.map((todo) =>
         todo.id === edit
           ? { ...todo, title: text, photo, date: formatDate(date) }
-          : todos
+          : todo
       )
     );
     setPhoto(null);
